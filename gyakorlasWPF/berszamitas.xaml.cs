@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace gyakorlasWPF
 {
@@ -18,56 +19,83 @@ namespace gyakorlasWPF
     /// Interaction logic for berszamitas.xaml
     /// </summary>
 
+    internal class Adatok : INotifyPropertyChanged
+    {
+        public int oraber;
+        public int hetiMunka;
+        public int haviber;
+
+        public int Oraber
+        {
+            get { return oraber; }
+            set
+            {
+                if (int.TryParse(value.ToString(), out int result))
+                {
+                    oraber = result;
+                    OnPropertyChanged(nameof(Oraber));
+                    OnPropertyChanged(nameof(Haviber)); // Update Haviber when Oraber changes
+                }
+                else
+                {
+                    MessageBox.Show("Nem megfelelő az érték!");
+                }
+            }
+        }
+
+        public int HetiMunka
+        {
+            get { return hetiMunka; }
+            set
+            {
+                if (int.TryParse(value.ToString(), out int result))
+                {
+                    hetiMunka = result;
+                    OnPropertyChanged(nameof(HetiMunka));
+                    OnPropertyChanged(nameof(Haviber)); // Update Haviber when HetiMunka changes
+                }
+                else
+                {
+                    MessageBox.Show("Nem megfelelő az érték!");
+                }
+            }
+        }
+
+        public int Haviber
+        {
+            get { return oraber * hetiMunka * 4; }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+    }
+
+
 
     public partial class berszamitas : Window
     {
-        public string oraberPassBack { get; set; }
-        public string hetiMunkaPassBack { get; set; }
-        public string haviberPassBack { get; set; }
+        Adatok adatok = new Adatok();
 
-        int oraberaValue;
-        int hetiMunkaValue;
+        public int oraberPassBack { get; private set; }
+        public int hetiMunkaPassBack { get; private set; }
+        public int haviberPassBack { get; private set; }
+
         public berszamitas()
         {
             InitializeComponent();
-        }
 
-        private void oraber_TextChanged(object sender, EventArgs e)
-        {
-            string oraberText = oraber.Text;
-
-            
-            if (int.TryParse(oraberText, out oraberaValue))
-            {
-                haviberOutput.Content = oraberaValue * hetiMunkaValue;
-            }
-            else
-            {
-                MessageBox.Show("Az órabérnek egy számnak kell lennie!");
-            }
-        }
-
-        private void hetiMunka_TextChanged(object sender, EventArgs e)
-        {
-            string hetiMunkaText = hetiMunka.Text;
-
-            
-            if(int.TryParse(hetiMunkaText, out hetiMunkaValue))
-            {
-                haviberOutput.Content = oraberaValue * hetiMunkaValue;
-            }
-            else
-            {
-                MessageBox.Show("A heti munka óráknak egy számnak kell lennie!");
-            }
-
+            DataContext = adatok;
         }
 
         private void ok_Click(object sender, RoutedEventArgs e)
         {
-            oraberPassBack = oraber.Text;
-            hetiMunkaPassBack = hetiMunka.Text;
-            haviberPassBack = haviberOutput.Content.ToString();
+            oraberPassBack = adatok.Oraber;
+            hetiMunkaPassBack = adatok.HetiMunka;
+            haviberPassBack = adatok.Haviber;
             this.Close();
         }
     }

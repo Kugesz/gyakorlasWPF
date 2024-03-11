@@ -16,16 +16,16 @@
             <RowDefinition Height="400"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <ListBox Name="alkalmazottakLista">
+        <ListBox Name="alkalmazottakLista" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
+                          <ColumnDefinition Width="*"></ColumnDefinition>
+                          <ColumnDefinition Width="*"></ColumnDefinition>
+                          <ColumnDefinition Width="*"></ColumnDefinition>
+                          <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="{Binding name}" Margin="5"></TextBlock>
                         <TextBlock Grid.Column="1" Text="{Binding phone}" Margin="5"></TextBlock>
@@ -72,10 +72,10 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Label Grid.Column="0">Név</Label>
-            <TextBox Name="inputName" Grid.Column="0" Margin="10 65"></TextBox>
+            <TextBox Name="inputName" Grid.Column="0" Margin="10 60"></TextBox>
 
             <Label Grid.Column="1">Telefonszám</Label>
-            <TextBox Name="inputPhone" Grid.Column="1" Margin="10 65"></TextBox>
+            <TextBox Name="inputPhone" Grid.Column="1" Margin="10 60"></TextBox>
             
             <Button Name="berszamitas_Gomb" Grid.Column="3" Margin="25 60" Click="berszamitas_Gomb_Click">Bérszámítás</Button>
 
